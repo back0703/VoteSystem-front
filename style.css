@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    color: black;
+}
+
+.tab button:hover {
+    background-color: #c0c0c0;
+}
+
+.tab button.active {
+    background-color: #000000;
+    color: white;
+}
+
+.tabcontent {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: white;
+}
+
+input[type="text"],
+button {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #000000;
+}
+
+.optionInput {
+    width: 80%;
+    display: inline-block;
+}
+
+.removeOption {
+    color: red;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#chartContainer {
+    max-width: 600px;
+    margin: 20px auto;
+}

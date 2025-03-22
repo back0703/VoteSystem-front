@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线投票系统</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- 选项卡 -->
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'create')">创建投票</button>
+        <button class="tablinks" onclick="openTab(event, 'vote')">参与投票</button>
+    </div>
+
+    <!-- 创建投票 -->
+    <div id="create" class="tabcontent">
+        <h2>创建新投票</h2>
+        <input type="text" id="voteTitle" placeholder="输入投票主题">
+        <div id="optionsContainer">
+            <div>
+                <input type="text" class="optionInput" placeholder="选项1">
+                <span class="removeOption" onclick="removeOption(this)"><i class="fas fa-times"></i></span>
+            </div>
+        </div>
+        <button onclick="addOption()">+ 添加选项</button>
+        <button onclick="createVote()">创建投票</button>
+    </div>
+
+    <!-- 参与投票 -->
+    <div id="vote" class="tabcontent">
+        <h2>参与投票</h2>
+        <div id="voteList"></div>
+    </div>
+
+    <!-- 清除投票记录 -->
+    <div style="margin-top: 20px;">
+        <button onclick="clearVotes()" style="background-color: #f44336;">清除所有投票记录</button>
+    </div>
+
+</body>
+
+</html>
