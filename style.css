@@ -63,12 +63,6 @@ button:hover {
     display: inline-block;
 }
 
-.removeOption {
-    color: red;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
 #chartContainer {
     max-width: 600px;
     margin: 20px auto;

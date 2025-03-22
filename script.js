@@ -143,23 +143,5 @@ function showResults(voteId) {
     window.location.href = `results.html?voteId=${voteId}`;
 }
 
-// 清除所有投票记录
-function clearVotes() {
-    if (confirm("确定要清除所有投票记录吗？此操作不可恢复！")) {
-        fetch('http://localhost:8080/api/votes/clear', {
-            method: 'POST'
-        })
-            .then(response => response.text())
-            .then(message => {
-                alert(message);
-                loadVoteList(); // 刷新投票列表
-            })
-            .catch(error => {
-                console.error("清除投票记录失败：", error);
-                alert("清除投票记录失败，请稍后重试！");
-            });
-    }
-}
-
 // 默认打开“创建投票”选项卡
 document.querySelector(".tablinks").click();
