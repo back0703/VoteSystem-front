@@ -22,7 +22,7 @@ function addOption() {
   const div = document.createElement("div");
   div.innerHTML = `
       <input type="text" class="optionInput" placeholder="选项${container.children.length + 1}">
-      <span class="removeOption" onclick="removeOption(this)"><i class="fas fa-times"></i></span>
+
     `;
   container.appendChild(div);
 }
@@ -35,8 +35,8 @@ function createVote() {
   const options = Array.from(document.querySelectorAll('.optionInput'))
     .map(input => input.value.trim())
     .filter(option => option.length > 0);
-  if (!title || options.length < 2) {
-    alert("请填写投票主题并至少提供两个选项！");
+  if (!title || options.length < 2 || !startTime || !endTime) {
+    alert("请填写所有必填项：投票主题、至少两个选项和时间设置！");
     return;
   }
   // 构造表单数据
@@ -60,9 +60,11 @@ function createVote() {
       document.getElementById("optionsContainer").innerHTML = `
         <div>
           <input type="text" class="optionInput" placeholder="选项1">
-          <span class="removeOption" onclick="removeOption(this)"><i class="fas fa-times"></i></span>
+          
         </div>
       `;
+      //重置表单
+      resetCreateForm();
     })
     .catch(error => {
       console.error("创建投票失败：", error);
@@ -99,6 +101,7 @@ function loadVoteList() {
                   <input type="radio" name="${voteId}" value="${opt}"> ${opt}
                 </label><br>
               `).join("")}
+              <div class="countdown" id="countdown-${voteId}"></div>
               <button onclick="castVote('${voteId}')">提交投票</button>
               <button onclick="showResults('${voteId}')">查看结果</button>
             </div>
@@ -106,7 +109,8 @@ function loadVoteList() {
       }).join("");
       Object.keys(votes).forEach(voteId => {
         const endTime = new Date(votes[voteId].endTime).getTime();
-        updateCountdown(voteId, endTime);
+        const startTime = new Date(votes[voteId].startTime).getTime();
+        updateCountdown(voteId, startTime, endTime);
       });
     })
     .catch(error => {
@@ -134,7 +138,7 @@ function castVote(voteId) {
     .then(message => {
       alert(message);
       // 刷新投票列表
-      resetCreateForm(); 
+      loadVoteList();
     })
     .catch(error => {
       console.error("提交投票失败：", error);
@@ -152,26 +156,48 @@ function showResults(voteId) {
 document.querySelector(".tablinks").click();
 
 // 倒计时更新函数
-function updateCountdown(voteId, endTime) {
+function updateCountdown(voteId, startTime, endTime) {
   const timerElement = document.getElementById(`countdown-${voteId}`);
+  if (!timerElement) {
+    console.error(`未找到倒计时元素: countdown-${voteId}`);
+    return;
+  }
+  let timer;
 
-  const timer = setInterval(() => {
+  const updateDisplay = () => {
     const now = new Date().getTime();
-    const distance = endTime - now;
+    const timeToStart = startTime - now;
+    const timeToEnd = endTime - now;
 
-    if (distance < 0) {
-      clearInterval(timer);
-      timerElement.innerHTML = "投票已结束";
-      return;
+    switch (true) {
+      case timeToStart > 0: // 投票未开始
+        const daysToStart = Math.floor(timeToStart / (1000 * 60 * 60 * 24));
+        const hoursToStart = Math.floor((timeToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutesToStart = Math.floor((timeToStart % (1000 * 60 * 60)) / (1000 * 60));
+        const secondsToStart = Math.floor((timeToStart % (1000 * 60)) / 1000);
+        timerElement.innerHTML = `投票未开始，距离开始还有: ${daysToStart} 天 ${hoursToStart} 时 ${minutesToStart} 分 ${secondsToStart} 秒`;
+        timerElement.style.color = "#FF9800";
+        break;
+
+      case timeToEnd > 0: // 投票进行中
+        const days = Math.floor(timeToEnd / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeToEnd % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeToEnd % (1000 * 60)) / 1000);
+        timerElement.innerHTML = `投票进行中，距离结束还有: ${days} 天 ${hours} 时 ${minutes} 分 ${seconds} 秒`;
+        timerElement.style.color = "#4CAF50";
+        break;
+
+      default: // 投票已结束
+        clearInterval(timer);
+        timerElement.innerHTML = "投票已结束";
+        timerElement.style.color = "#F44336";
+        return;
     }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    timerElement.innerHTML = `剩余时间: ${days}天 ${hours}时 ${minutes}分 ${seconds}秒`;
-  }, 1000);
+  };
+  updateDisplay();
+  timer = setInterval(updateDisplay, 1000);
+  return timer;
 }
 
 //表单重置函数

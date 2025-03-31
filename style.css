@@ -56,6 +56,7 @@ button {
 
 button:hover {
     background-color: #000000;
+    transform: scale(1.02);
 }
 
 .optionInput {
@@ -69,6 +70,7 @@ button:hover {
 }
 
 .countdown {
+    display: block;
     color: #666;
     font-size: 0.9em;
     margin: 10px 0;
