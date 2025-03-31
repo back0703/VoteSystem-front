@@ -22,7 +22,6 @@ function addOption() {
   const div = document.createElement("div");
   div.innerHTML = `
       <input type="text" class="optionInput" placeholder="选项${container.children.length + 1}">
-
     `;
   container.appendChild(div);
 }
@@ -60,7 +59,6 @@ function createVote() {
       document.getElementById("optionsContainer").innerHTML = `
         <div>
           <input type="text" class="optionInput" placeholder="选项1">
-          
         </div>
       `;
       //重置表单
@@ -163,12 +161,10 @@ function updateCountdown(voteId, startTime, endTime) {
     return;
   }
   let timer;
-
   const updateDisplay = () => {
     const now = new Date().getTime();
     const timeToStart = startTime - now;
     const timeToEnd = endTime - now;
-
     switch (true) {
       case timeToStart > 0: // 投票未开始
         const daysToStart = Math.floor(timeToStart / (1000 * 60 * 60 * 24));
@@ -178,7 +174,6 @@ function updateCountdown(voteId, startTime, endTime) {
         timerElement.innerHTML = `投票未开始，距离开始还有: ${daysToStart} 天 ${hoursToStart} 时 ${minutesToStart} 分 ${secondsToStart} 秒`;
         timerElement.style.color = "#FF9800";
         break;
-
       case timeToEnd > 0: // 投票进行中
         const days = Math.floor(timeToEnd / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -187,7 +182,6 @@ function updateCountdown(voteId, startTime, endTime) {
         timerElement.innerHTML = `投票进行中，距离结束还有: ${days} 天 ${hours} 时 ${minutes} 分 ${seconds} 秒`;
         timerElement.style.color = "#4CAF50";
         break;
-
       default: // 投票已结束
         clearInterval(timer);
         timerElement.innerHTML = "投票已结束";
@@ -208,7 +202,6 @@ function resetCreateForm() {
   document.getElementById("optionsContainer").innerHTML = `
     <div>
       <input type="text" class="optionInput" placeholder="选项1">
-      <span class="removeOption" onclick="removeOption(this)"><i class="fas fa-times"></i></span>
     </div>
   `;
 }
