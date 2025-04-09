@@ -1,3 +1,5 @@
+const API_BASE_URL = 'localhost';
+
 // 打开选项卡
 function openTab(evt, tabName) {
   const tabcontent = document.getElementsByClassName("tabcontent");
@@ -45,7 +47,7 @@ function createVote() {
   formData.append("endTime", endTime);
   options.forEach(option => formData.append("options", option));
   // 调用后端 API 创建投票
-  fetch('http://192.168.244.135:8080/api/votes/create', {
+  fetch(`http://${API_BASE_URL}:8080/api/votes/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -73,7 +75,7 @@ function createVote() {
 //获取投票列表
 function loadVoteList() {
   // 调用后端 API 获取所有投票
-  fetch('http://192.168.244.135:8080/api/votes')
+  fetch(`http://${API_BASE_URL}:8080/api/votes`)
     .then(response => {
       if (!response.ok) {
         throw new Error("网络响应异常");
@@ -125,7 +127,7 @@ function castVote(voteId) {
     return;
   }
   // 调用后端 API 提交投票
-  fetch('http://192.168.244.135:8080/api/votes/vote', {
+  fetch(`http://${API_BASE_URL}:8080/api/votes/vote`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
