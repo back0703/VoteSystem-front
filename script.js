@@ -1,4 +1,4 @@
-const API_BASE_URL = 'localhost';
+const API_BASE_URL = '192.168.215.135';
 
 // 打开选项卡
 function openTab(evt, tabName) {

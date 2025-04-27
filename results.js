@@ -1,7 +1,7 @@
 // 从URL中获取投票ID
 const urlParams = new URLSearchParams(window.location.search);
 const voteId = urlParams.get('voteId');
-const API_BASE_URL = 'localhost';
+const API_BASE_URL = '192.168.215.135';
 
 // 调用后端 API 获取投票结果
 fetch(`http://${API_BASE_URL}:8080/api/votes/results?voteId=${voteId}`)
